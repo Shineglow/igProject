@@ -14,3 +14,70 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxSeed: 2
   jumpHeight: 1
+  accelerationMax: 0
+  acceleration:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.05
+      inSlope: 0.78331304
+      outSlope: 0.78331304
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.25925925
+    - serializedVersion: 3
+      time: 0.59444445
+      value: 0.9739234
+      inSlope: 0.84652734
+      outSlope: 0.84652734
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.081018515
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -5.4865556
+      outSlope: -5.4865556
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.011513294
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  deceleration:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.20814528
+      value: 0.6333809
+      inSlope: 0.9860023
+      outSlope: 0.9860023
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.2526587
+      outWeight: 0.06864227
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

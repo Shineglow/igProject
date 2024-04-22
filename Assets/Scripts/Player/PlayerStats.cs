@@ -11,5 +11,13 @@ namespace Player
         
         public float jumpHeight;
         public float JumpForce => jumpHeight;
+        
+        public float accelerationMax;
+        public float AccelerationMax => accelerationMax;
+
+        public AnimationCurve acceleration;
+        public AnimationCurve Acceleration => acceleration;
+        public AnimationCurve deceleration;
+        public AnimationCurve Deceleration => deceleration;
     }
 }

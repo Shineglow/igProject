@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Player
@@ -15,6 +16,8 @@ namespace Player
         private Vector3 _jumpForce;
         private bool _hasContactsWithFloor;
 
+        public Vector2 CurrentVelocity => _rb.velocity;
+
         private void Awake()
         {
             _rb = GetComponent<Rigidbody2D>();
@@ -26,20 +29,34 @@ namespace Player
         {
             var deltaTime = Time.fixedDeltaTime;
             _hasContactsWithFloor = _contactPoints != null && _rb.GetContacts(_contactFilter, _contactPoints) > 0;
-
+            MoveUnderGround(deltaTime);
             JumpInUpdate(deltaTime);
+        }
+
+        private void MoveUnderGround(float deltaTime)
+        {
+            if (!_hasContactsWithFloor || 
+                _movementVector.magnitude == 0) 
+                return;
+            
+            var surfaceNormal = _contactPoints[0].normal;
+            var normalOrtogonal = new Vector2(surfaceNormal.y, -surfaceNormal.x);
+            var direction = Mathf.Sign(_movementVector.x);
+            var relativeMovement = normalOrtogonal * (direction * _movementVector.magnitude);
+
+            var a = _rb.velocity;
+            a.x = relativeMovement.x;
+            _rb.velocity = a;
+            Debug.Log($"_rb.velocity = {_rb.velocity}");
         }
 
         private void JumpInUpdate(float deltaTime)
         {
-            if (_hasContactsWithFloor)
-            {
-                if (_jumpForce.magnitude > 0)
-                {
-                    _rb.AddForce(_jumpForce, ForceMode2D.Impulse);
-                    _jumpForce = Vector3.zero;
-                }
-            }
+            if (!_hasContactsWithFloor || !(_jumpForce.magnitude > 0)) return;
+            
+            _rb.AddForce(_jumpForce, ForceMode2D.Impulse);
+            _jumpForce = Vector3.zero;
+            _hasContactsWithFloor = false;
         }
 
         public void Jump(float height)
@@ -49,7 +66,7 @@ namespace Player
             Debug.Log($"_jumpForce = {_jumpForce}");
         }
 
-        public void SetMoveDirection(Vector2 direction)
+        public void SetSpeedVector(Vector2 direction)
         {
             _movementVector = direction;
         }

@@ -38,10 +38,10 @@ namespace Player
                 interactableDetecter.InteractableLeaveArea += interactablesSelectModule.OnInteractableLeaveArea;
             }
         }
-
+        
         public void Move(Vector2 direction)
         {
-            playerPhysicsBody.SetMoveDirection(direction*stats.MaxSeed);
+            playerPhysicsBody.SetSpeedVector(direction*stats.MaxSeed);
         }
 
         public void Jump()
