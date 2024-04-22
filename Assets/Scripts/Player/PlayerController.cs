@@ -21,8 +21,8 @@ namespace Player
 
         private void OnJumpPressed(InputAction.CallbackContext obj)
         {
-            var readValue = obj.ReadValue<bool>();
-            Debug.Log($"Jump changed. Current value: {readValue}");
+            // var readValue = obj.ReadValue<bool>();
+            Debug.Log($"Jump changed. Current value: {1/*readValue*/}");
             character.Jump();
         }
 

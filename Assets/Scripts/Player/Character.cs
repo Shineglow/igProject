@@ -29,7 +29,7 @@ namespace Player
 
         public void Jump()
         {
-            throw new System.NotImplementedException();
+            playerPhysicsBody.Jump(stats.jumpHeight);
         }
 
         public void Action()
