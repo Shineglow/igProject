@@ -46,7 +46,7 @@ namespace Player
 
         public void Jump()
         {
-            playerPhysicsBody.Jump(stats.jumpHeight);
+            playerPhysicsBody.Jump(stats.JumpHeight);
         }
 
         public void Action()
