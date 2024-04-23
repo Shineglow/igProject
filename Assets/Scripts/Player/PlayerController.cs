@@ -16,13 +16,19 @@ namespace Player
             playerInput = GetComponent<PlayerInput>();
             playerInput.actions["HorizontalMain"].performed += OnHorizontalMainChanged;
             playerInput.actions["Jump"].performed += OnJumpPressed;
+            playerInput.actions["Interaction"].performed += OnInteractionPressed;
             character = GetComponent<Character>();
+        }
+
+        private void OnInteractionPressed(InputAction.CallbackContext obj)
+        {
+            Debug.Log($"Action pressed.");
+            character.Action();
         }
 
         private void OnJumpPressed(InputAction.CallbackContext obj)
         {
-            var readValue = obj.ReadValue<bool>();
-            Debug.Log($"Jump changed. Current value: {readValue}");
+            Debug.Log($"Jump pressed.");
             character.Jump();
         }
 

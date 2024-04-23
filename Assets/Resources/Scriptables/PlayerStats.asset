@@ -12,5 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0beb4ea6f4214367b33e8c6e869d00b4, type: 3}
   m_Name: PlayerStats
   m_EditorClassIdentifier: 
-  maxSeed: 2
-  jumpHeight: 1
+  <MaxSeed>k__BackingField: 2
+  <JumpHeight>k__BackingField: 1
+  <AccelerationMax>k__BackingField: 0.5
+  <Acceleration>k__BackingField:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  <Deceleration>k__BackingField:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
