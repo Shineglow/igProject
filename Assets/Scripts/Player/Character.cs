@@ -1,4 +1,4 @@
-using System;
+using CharacterInteractions;
 using UnityEngine;
 
 namespace Player
@@ -13,6 +13,11 @@ namespace Player
         private PlayerPhysicsBody playerPhysicsBody;
         private CharacterShapeAnimatedBody characterShapeAnimatedBody;
         private PlayerController playerController;
+
+        [SerializeField] 
+        private InteractorComponent interactableDetecter;
+
+        private InteractablesSelectModule interactablesSelectModule;
         
         public IPlayerStats Stats => stats;
 
@@ -20,11 +25,21 @@ namespace Player
         {
             playerPhysicsBody = GetComponent<PlayerPhysicsBody>();
             characterShapeAnimatedBody = GetComponent<CharacterShapeAnimatedBody>();
+            if (interactableDetecter == null)
+            {
+                Debug.LogWarning("InteractorComponent is null! The character will not be able to detect objects to interact with");
+            }
+            else
+            {
+                interactablesSelectModule = new InteractablesSelectModule();
+                interactableDetecter.InteractableInArea += interactablesSelectModule.OnInteractableEnterArea;
+                interactableDetecter.InteractableLeaveArea += interactablesSelectModule.OnInteractableLeaveArea;
+            }
         }
-
+        
         public void Move(Vector2 direction)
         {
-            playerPhysicsBody.SetMoveDirection(direction*stats.MaxSeed);
+            playerPhysicsBody.SetSpeedVector(direction*stats.MaxSeed);
         }
 
         public void Jump()
@@ -34,7 +49,13 @@ namespace Player
 
         public void Action()
         {
-            throw new System.NotImplementedException();
+            var interactable = interactablesSelectModule.Interactable;
+            if (interactable == null)
+                return;
+            var animationName = interactable.Interact();
+            Debug.Log($"Passed animation name: {animationName}");
+            // TODO: pass animation name (if it not null) to character shape body. The body must play passed animation
+            // TODO: or log the reason why it can't be done
         }
     }
 }
