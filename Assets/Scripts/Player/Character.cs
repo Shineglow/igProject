@@ -39,6 +39,8 @@ namespace Player
         
         public void Move(Vector2 direction)
         {
+            var animationName = direction.magnitude > 0 ? "Run" : "Idle";
+            characterShapeAnimatedBody.PlayAnimation(animationName);
             playerPhysicsBody.SetSpeedVector(direction*stats.MaxSeed);
         }
 
