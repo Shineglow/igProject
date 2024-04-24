@@ -1,13 +1,7 @@
-using System;
 using UnityEngine;
 
-namespace Player
+namespace Characters
 {
-    public interface IAnimatedObject
-    {
-        void PlayAnimation(string animationName);
-    }
-
     public class CharacterShapeAnimatedBody : MonoBehaviour, IAnimatedObject
     {
         [SerializeField]

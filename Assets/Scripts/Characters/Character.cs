@@ -1,18 +1,17 @@
 using CharacterInteractions;
+using Characters.Player;
 using UnityEngine;
 
-namespace Player
+namespace Characters
 {
     [RequireComponent(typeof(PlayerPhysicsBody))]
     [RequireComponent(typeof(CharacterShapeAnimatedBody))]
-    [RequireComponent(typeof(PlayerController))]
     public class Character : MonoBehaviour, IControlable2D
     {
         [SerializeField]
         private PlayerStats stats;
         private PlayerPhysicsBody playerPhysicsBody;
         private CharacterShapeAnimatedBody characterShapeAnimatedBody;
-        private PlayerController playerController;
 
         [SerializeField] 
         private InteractorComponent interactableDetecter;
