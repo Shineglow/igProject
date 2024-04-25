@@ -14,14 +14,14 @@ namespace Characters.Controllers
         public bool IsInputNull => playerInput == null;
 
         private Action UnbindAllInputActions = delegate { };
-
+        
         [Inject]
         public void Construct(IControlable2D character, PlayerInput input)
         {
             SetCharacter(character);
             SetInput(input);
         }
-        
+
         public void SetCharacter(IControlable2D character)
         {
             this.character = character;
