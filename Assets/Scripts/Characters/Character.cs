@@ -35,11 +35,17 @@ namespace Characters
                 interactableDetecter.InteractableLeaveArea += interactablesSelectModule.OnInteractableLeaveArea;
             }
         }
-        
+
         public void Move(Vector2 direction)
         {
             var animationName = direction.magnitude > 0 ? "Run" : "Idle";
             characterShapeAnimatedBody.PlayAnimation(animationName);
+            if (direction.x != 0)
+            {
+                var newLookDirection = direction.x > 0;
+                if(newLookDirection != characterShapeAnimatedBody.IsLookAtRight)
+                    characterShapeAnimatedBody.LookAtRight(newLookDirection);
+            }
             playerPhysicsBody.SetSpeedVector(direction*stats.MaxSeed);
         }
 

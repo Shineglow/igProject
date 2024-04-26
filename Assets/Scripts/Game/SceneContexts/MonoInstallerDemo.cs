@@ -16,13 +16,20 @@ namespace Game.SceneContexts
 
         public override void InstallBindings()
         {
-            if(character == null)
-                Debug.Log($"{nameof(character)} reference is null!");
-            Container.Bind<IControlable2D>().FromInstance(character).AsSingle();
-            if(character == null)
-                Debug.Log($"{nameof(PlayerInput)} reference is null!");
             Container.Bind<PlayerInput>().FromInstance(playerInput).AsSingle();
+            BindCharacterAssociatedEntities();
+            BindControllers();
+        }
+
+        private void BindCharacterAssociatedEntities()
+        {
+            Container.Bind<Character>().FromInstance(character).AsSingle();
+        }
+
+        private void BindControllers()
+        {
             Container.Bind<ICharacterController>().To<PlayerController>().AsSingle();
+            Container.Bind<PlayerController>().AsSingle();
         }
     }
 }

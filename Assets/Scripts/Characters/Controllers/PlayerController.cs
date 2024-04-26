@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Zenject;
 
 namespace Characters.Controllers
 {
@@ -10,15 +9,10 @@ namespace Characters.Controllers
         private PlayerInput playerInput;
         private IControlable2D character;
 
-        public bool IsControllableNull => character == null;
-        public bool IsInputNull => playerInput == null;
-
         private Action UnbindAllInputActions = delegate { };
         
-        [Inject]
-        public void Construct(IControlable2D character, PlayerInput input)
+        public PlayerController(PlayerInput input)
         {
-            SetCharacter(character);
             SetInput(input);
         }
 

@@ -466,6 +466,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78d2651d32174f71919447ebf8ad02bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 1518115367}
   animator: {fileID: 1518115368}
 --- !u!114 &236957872
 MonoBehaviour:
@@ -517,7 +518,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 236957861}
   m_Lens:
-    FieldOfView: 119.66
+    FieldOfView: 50
     OrthographicSize: 5
     NearClipPlane: 0.3
     FarClipPlane: 1000
@@ -3218,7 +3219,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 119.66
+  field of view: 50
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -3698,8 +3699,8 @@ SceneRoots:
   - {fileID: 432432461}
   - {fileID: 2013410475}
   - {fileID: 335165270}
-  - {fileID: 236957861}
   - {fileID: 2039814563}
   - {fileID: 3418710320138472932}
   - {fileID: 9137710525008380900}
   - {fileID: 1021683164}
+  - {fileID: 236957861}

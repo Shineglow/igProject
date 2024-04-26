@@ -1,17 +1,28 @@
 using Characters.Controllers;
+using Characters;
 using UnityEngine;
 using Zenject;
 
 namespace Game
 {
-    public class GameMode : MonoBehaviour
+    public class GameMode : MonoBehaviour, IGameMode
     {
-        private ICharacterController playerController;
+        private ICharacterController currentController;
+        private Character playerCharacter;
 
         [Inject]
-        public void Construct(ICharacterController playerController)
+        public void Construct(PlayerController playerController, Character character)
         {
-            this.playerController = playerController;
+            playerCharacter = character;
+            currentController = playerController;
+            currentController.SetCharacter(character);
+        }
+
+        public void SwitchController(ICharacterController controller)
+        {
+            currentController.SetCharacter(null);
+            currentController = controller;
+            currentController.SetCharacter(playerCharacter);
         }
     }
 }
