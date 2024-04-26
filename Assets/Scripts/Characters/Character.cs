@@ -1,18 +1,17 @@
 using CharacterInteractions;
+using Characters.Player;
 using UnityEngine;
 
-namespace Player
+namespace Characters
 {
     [RequireComponent(typeof(PlayerPhysicsBody))]
     [RequireComponent(typeof(CharacterShapeAnimatedBody))]
-    [RequireComponent(typeof(PlayerController))]
     public class Character : MonoBehaviour, IControlable2D
     {
         [SerializeField]
         private PlayerStats stats;
         private PlayerPhysicsBody playerPhysicsBody;
         private CharacterShapeAnimatedBody characterShapeAnimatedBody;
-        private PlayerController playerController;
 
         [SerializeField] 
         private InteractorComponent interactableDetecter;
@@ -36,11 +35,17 @@ namespace Player
                 interactableDetecter.InteractableLeaveArea += interactablesSelectModule.OnInteractableLeaveArea;
             }
         }
-        
+
         public void Move(Vector2 direction)
         {
             var animationName = direction.magnitude > 0 ? "Run" : "Idle";
             characterShapeAnimatedBody.PlayAnimation(animationName);
+            if (direction.x != 0)
+            {
+                var newLookDirection = direction.x > 0;
+                if(newLookDirection != characterShapeAnimatedBody.IsLookAtRight)
+                    characterShapeAnimatedBody.LookAtRight(newLookDirection);
+            }
             playerPhysicsBody.SetSpeedVector(direction*stats.MaxSeed);
         }
 
