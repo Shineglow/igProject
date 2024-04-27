@@ -17,6 +17,7 @@ namespace Characters
         private InteractorComponent interactableDetecter;
 
         private InteractablesSelectModule interactablesSelectModule;
+        private AccelerationModule _accelerationModule;
         
         public IPlayerStats Stats => stats;
 
@@ -24,9 +25,18 @@ namespace Characters
         {
             playerPhysicsBody = GetComponent<PlayerPhysicsBody>();
             characterShapeAnimatedBody = GetComponent<CharacterShapeAnimatedBody>();
+            
+            InteractablesDetecterInitialization();
+            
+            _accelerationModule = new AccelerationModule();
+        }
+
+        private void InteractablesDetecterInitialization()
+        {
             if (interactableDetecter == null)
             {
-                Debug.LogWarning("InteractorComponent is null! The character will not be able to detect objects to interact with");
+                Debug.LogWarning(
+                    "InteractorComponent is null! The character will not be able to detect objects to interact with");
             }
             else
             {
@@ -38,15 +48,34 @@ namespace Characters
 
         public void Move(Vector2 direction)
         {
-            var animationName = direction.magnitude > 0 ? "Run" : "Idle";
-            characterShapeAnimatedBody.PlayAnimation(animationName);
+            StupidAnimationSwitch(direction);
+
+            ChangeLookDirection(direction);
+
+            CalculateSpeed(direction);
+        }
+
+        private void CalculateSpeed(Vector2 direction)
+        {
+            var actualSpeed = _accelerationModule.GetActualSpeed(direction, Time.deltaTime, stats);
+
+            playerPhysicsBody.SetSpeedVector(direction * actualSpeed);
+        }
+
+        private void ChangeLookDirection(Vector2 direction)
+        {
             if (direction.x != 0)
             {
                 var newLookDirection = direction.x > 0;
-                if(newLookDirection != characterShapeAnimatedBody.IsLookAtRight)
+                if (newLookDirection != characterShapeAnimatedBody.IsLookAtRight)
                     characterShapeAnimatedBody.LookAtRight(newLookDirection);
             }
-            playerPhysicsBody.SetSpeedVector(direction*stats.MaxSeed);
+        }
+
+        private void StupidAnimationSwitch(Vector2 direction)
+        {
+            var animationName = direction.magnitude > 0 ? "Run" : "Idle";
+            characterShapeAnimatedBody.PlayAnimation(animationName);
         }
 
         public void Jump()

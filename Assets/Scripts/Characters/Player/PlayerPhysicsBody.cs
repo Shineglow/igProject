@@ -39,13 +39,10 @@ namespace Characters.Player
                 return;
             
             var surfaceNormal = _contactPoints[0].normal;
-            var normalOrtogonal = new Vector2(surfaceNormal.y, -surfaceNormal.x);
-            var direction = Mathf.Sign(_movementVector.x);
-            var relativeMovement = normalOrtogonal * (direction * _movementVector.magnitude);
-
-            var a = _rb.velocity;
-            a.x = relativeMovement.x;
-            _rb.velocity = a;
+            var normalOrthogonal = new Vector2(surfaceNormal.y, -surfaceNormal.x);
+            var relativeMovement = normalOrthogonal * (Mathf.Sign(_movementVector.x) * _movementVector.magnitude);
+            
+            _rb.velocity = relativeMovement;
             Debug.Log($"_rb.velocity = {_rb.velocity}");
         }
 

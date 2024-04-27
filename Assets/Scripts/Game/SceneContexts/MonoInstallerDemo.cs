@@ -28,8 +28,7 @@ namespace Game.SceneContexts
 
         private void BindControllers()
         {
-            Container.Bind<ICharacterController>().To<PlayerController>().AsSingle();
-            Container.Bind<PlayerController>().AsSingle();
+            Container.BindInterfacesAndSelfTo<PlayerController>().AsSingle();
         }
     }
 }
