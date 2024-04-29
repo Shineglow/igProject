@@ -1,0 +1,3 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:GroupBox name="FieldsContainer" style="width: 18%; height: 20%; align-items: flex-start; align-self: flex-start; flex-wrap: nowrap; flex-shrink: initial; flex-grow: initial; justify-content: flex-start; flex-basis: auto; padding-bottom: 5px;" />
+</ui:UXML>

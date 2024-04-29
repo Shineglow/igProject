@@ -47,7 +47,7 @@ namespace Characters.Controllers
         {
             if (playerInput == null)
             {
-                Debug.LogError("Trying to subscribe on not set input!");
+                UnityEngine.Debug.LogError("Trying to subscribe on not set input!");
                 return;
             }
             
@@ -56,20 +56,20 @@ namespace Characters.Controllers
 
         private void OnInteractionPressed(InputAction.CallbackContext obj)
         {
-            Debug.Log($"Action pressed.");
+            UnityEngine.Debug.Log($"Action pressed.");
             character?.Action();
         }
 
         private void OnJumpPressed(InputAction.CallbackContext obj)
         {
-            Debug.Log($"Jump pressed.");
+            UnityEngine.Debug.Log($"Jump pressed.");
             character?.Jump();
         }
 
         private void OnHorizontalMainChanged(InputAction.CallbackContext obj)
         {
             var readValue = obj.ReadValue<float>();
-            Debug.Log($"Horizontal axis changed. Current value: {readValue}");
+            UnityEngine.Debug.Log($"Horizontal axis changed. Current value: {readValue}");
             character?.Move(new Vector2(readValue,0));
         }
     }

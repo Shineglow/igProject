@@ -23,6 +23,7 @@ namespace Game.SceneContexts
 
         private void BindCharacterAssociatedEntities()
         {
+            Container.BindInterfacesAndSelfTo<AccelerationModule>().FromNew().AsSingle();
             Container.Bind<Character>().FromInstance(character).AsSingle();
         }
 

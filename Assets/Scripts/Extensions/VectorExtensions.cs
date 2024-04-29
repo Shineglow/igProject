@@ -13,7 +13,5 @@ namespace Extensions
         {
             return vec.x + vec.y + vec.z < 0.001f;
         }
-
-        public static bool IsEqualZero(this float f) => f is < 0.001f and > -0.001f;
     }
 }
