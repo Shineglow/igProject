@@ -17,16 +17,24 @@ namespace Characters
         private InteractorComponent interactableDetecter;
 
         private InteractablesSelectModule interactablesSelectModule;
-        
+
         public IPlayerStats Stats => stats;
 
         private void Awake()
         {
             playerPhysicsBody = GetComponent<PlayerPhysicsBody>();
+            playerPhysicsBody.SetCharacterStats(stats);
             characterShapeAnimatedBody = GetComponent<CharacterShapeAnimatedBody>();
+            
+            InteractablesDetecterInitialization();
+        }
+
+        private void InteractablesDetecterInitialization()
+        {
             if (interactableDetecter == null)
             {
-                Debug.LogWarning("InteractorComponent is null! The character will not be able to detect objects to interact with");
+                UnityEngine.Debug.LogWarning(
+                    "InteractorComponent is null! The character will not be able to detect objects to interact with");
             }
             else
             {
@@ -38,15 +46,26 @@ namespace Characters
 
         public void Move(Vector2 direction)
         {
+            StupidAnimationSwitch(direction);
+
+            ChangeLookDirection(direction);
+
+            playerPhysicsBody.SetMovementDirection(direction);
+        }
+
+        private void ChangeLookDirection(Vector2 direction)
+        {
+            if (direction.x == 0) return;
+
+            var newLookDirection = direction.x > 0;
+            if (newLookDirection != characterShapeAnimatedBody.IsLookAtRight)
+                characterShapeAnimatedBody.LookAtRight(newLookDirection);
+        }
+
+        private void StupidAnimationSwitch(Vector2 direction)
+        {
             var animationName = direction.magnitude > 0 ? "Run" : "Idle";
             characterShapeAnimatedBody.PlayAnimation(animationName);
-            if (direction.x != 0)
-            {
-                var newLookDirection = direction.x > 0;
-                if(newLookDirection != characterShapeAnimatedBody.IsLookAtRight)
-                    characterShapeAnimatedBody.LookAtRight(newLookDirection);
-            }
-            playerPhysicsBody.SetSpeedVector(direction*stats.MaxSeed);
         }
 
         public void Jump()
@@ -60,7 +79,7 @@ namespace Characters
             if (interactable == null)
                 return;
             var animationName = interactable.Interact();
-            Debug.Log($"Passed animation name: {animationName}");
+            UnityEngine.Debug.Log($"Passed animation name: {animationName}");
             // TODO: pass animation name (if it not null) to character shape body. The body must play passed animation
             // TODO: or log the reason why it can't be done
         }

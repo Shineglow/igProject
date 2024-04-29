@@ -23,13 +23,13 @@ namespace Game.SceneContexts
 
         private void BindCharacterAssociatedEntities()
         {
+            Container.BindInterfacesAndSelfTo<AccelerationModule>().FromNew().AsSingle();
             Container.Bind<Character>().FromInstance(character).AsSingle();
         }
 
         private void BindControllers()
         {
-            Container.Bind<ICharacterController>().To<PlayerController>().AsSingle();
-            Container.Bind<PlayerController>().AsSingle();
+            Container.BindInterfacesAndSelfTo<PlayerController>().AsSingle();
         }
     }
 }
