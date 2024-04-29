@@ -1,4 +1,6 @@
+using JetBrains.Annotations;
 using UnityEngine;
+using Zenject;
 
 namespace Characters.Player
 {
@@ -15,7 +17,18 @@ namespace Characters.Player
         private Vector3 _jumpForce;
         private bool _hasContactsWithFloor;
 
+        [SerializeField]
+        private AccelerationModule _accelerationModule;
+        
+        private IPlayerStats _stats;
+
         public Vector2 CurrentVelocity => _rb.velocity;
+        
+        [Inject]
+        public void Construct(AccelerationModule accelerationModule)
+        {
+            _accelerationModule = accelerationModule;
+        }
 
         private void Awake()
         {
@@ -28,22 +41,25 @@ namespace Characters.Player
         {
             var deltaTime = Time.fixedDeltaTime;
             _hasContactsWithFloor = _contactPoints != null && _rb.GetContacts(_contactFilter, _contactPoints) > 0;
-            MoveUnderGround(deltaTime);
+            
             JumpInUpdate(deltaTime);
+            
+            if(_hasContactsWithFloor)
+                MoveUnderGround(deltaTime);
         }
 
         private void MoveUnderGround(float deltaTime)
         {
-            if (!_hasContactsWithFloor || 
-                _movementVector.magnitude == 0) 
+            if (!_hasContactsWithFloor) 
                 return;
+            
+            var actualSpeed = _accelerationModule.GetActualSpeedSigned(_movementVector, deltaTime, _stats);
             
             var surfaceNormal = _contactPoints[0].normal;
             var normalOrthogonal = new Vector2(surfaceNormal.y, -surfaceNormal.x);
-            var relativeMovement = normalOrthogonal * (Mathf.Sign(_movementVector.x) * _movementVector.magnitude);
-            
+            var relativeMovement = normalOrthogonal * actualSpeed;
+
             _rb.velocity = relativeMovement;
-            Debug.Log($"_rb.velocity = {_rb.velocity}");
         }
 
         private void JumpInUpdate(float deltaTime)
@@ -58,13 +74,18 @@ namespace Characters.Player
         public void Jump(float height)
         {
             var forceUp = _rb.mass * Mathf.Sqrt(2f * -Physics.gravity.y * height);
-            _jumpForce = new Vector3(0, forceUp, 0);
-            Debug.Log($"_jumpForce = {_jumpForce}");
+            _jumpForce = Vector3.up * forceUp;
+            UnityEngine.Debug.Log($"_jumpForce = {_jumpForce}");
         }
 
-        public void SetSpeedVector(Vector2 direction)
+        public void SetMovementDirection(Vector2 direction)
         {
             _movementVector = direction;
+        }
+
+        public void SetCharacterStats([NotNull] IPlayerStats stats)
+        {
+            _stats = stats;
         }
     }
 }

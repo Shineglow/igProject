@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <MaxSeed>k__BackingField: 5
   <JumpHeight>k__BackingField: 1
-  <AccelerationMax>k__BackingField: 0.5
+  <AccelerationMax>k__BackingField: 5
   <Acceleration>k__BackingField:
     serializedVersion: 2
     m_Curve:

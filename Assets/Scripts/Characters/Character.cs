@@ -17,25 +17,23 @@ namespace Characters
         private InteractorComponent interactableDetecter;
 
         private InteractablesSelectModule interactablesSelectModule;
-        private AccelerationModule _accelerationModule;
-        
+
         public IPlayerStats Stats => stats;
 
         private void Awake()
         {
             playerPhysicsBody = GetComponent<PlayerPhysicsBody>();
+            playerPhysicsBody.SetCharacterStats(stats);
             characterShapeAnimatedBody = GetComponent<CharacterShapeAnimatedBody>();
             
             InteractablesDetecterInitialization();
-            
-            _accelerationModule = new AccelerationModule();
         }
 
         private void InteractablesDetecterInitialization()
         {
             if (interactableDetecter == null)
             {
-                Debug.LogWarning(
+                UnityEngine.Debug.LogWarning(
                     "InteractorComponent is null! The character will not be able to detect objects to interact with");
             }
             else
@@ -52,24 +50,16 @@ namespace Characters
 
             ChangeLookDirection(direction);
 
-            CalculateSpeed(direction);
-        }
-
-        private void CalculateSpeed(Vector2 direction)
-        {
-            var actualSpeed = _accelerationModule.GetActualSpeed(direction, Time.deltaTime, stats);
-
-            playerPhysicsBody.SetSpeedVector(direction * actualSpeed);
+            playerPhysicsBody.SetMovementDirection(direction);
         }
 
         private void ChangeLookDirection(Vector2 direction)
         {
-            if (direction.x != 0)
-            {
-                var newLookDirection = direction.x > 0;
-                if (newLookDirection != characterShapeAnimatedBody.IsLookAtRight)
-                    characterShapeAnimatedBody.LookAtRight(newLookDirection);
-            }
+            if (direction.x == 0) return;
+
+            var newLookDirection = direction.x > 0;
+            if (newLookDirection != characterShapeAnimatedBody.IsLookAtRight)
+                characterShapeAnimatedBody.LookAtRight(newLookDirection);
         }
 
         private void StupidAnimationSwitch(Vector2 direction)
@@ -89,7 +79,7 @@ namespace Characters
             if (interactable == null)
                 return;
             var animationName = interactable.Interact();
-            Debug.Log($"Passed animation name: {animationName}");
+            UnityEngine.Debug.Log($"Passed animation name: {animationName}");
             // TODO: pass animation name (if it not null) to character shape body. The body must play passed animation
             // TODO: or log the reason why it can't be done
         }
