@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Characters
 {
     [CreateAssetMenu(fileName = "PlayerStats", menuName = "Scriptable/Stats", order = 1)]
-    public class PlayerStats : ScriptableObject, IPlayerStats
+    public class CharacterStats : ScriptableObject, ICharacterStats
     {
         [field: SerializeField]
         public float MaxSeed {get;set;}

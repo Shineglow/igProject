@@ -4,5 +4,6 @@ namespace Characters
     {
         void PlayAnimation(string animationName);
         bool IsLookAtRight { get; }
+        void SetFlag(string flagName, bool value);
     }
 }

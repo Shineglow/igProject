@@ -6,10 +6,10 @@ namespace Characters
 {
     [RequireComponent(typeof(PlayerPhysicsBody))]
     [RequireComponent(typeof(CharacterShapeAnimatedBody))]
-    public class Character : MonoBehaviour, IControlable2D
+    public class Character : MonoBehaviour, ICharacter
     {
         [SerializeField]
-        private PlayerStats stats;
+        private CharacterStats stats;
         private PlayerPhysicsBody playerPhysicsBody;
         private CharacterShapeAnimatedBody characterShapeAnimatedBody;
 
@@ -18,7 +18,12 @@ namespace Characters
 
         private InteractablesSelectModule interactablesSelectModule;
 
-        public IPlayerStats Stats => stats;
+        public ICharacterStats CharacterStats => stats;
+        public Vector2 Velocity => playerPhysicsBody.CurrentVelocity;
+        
+        // TODO: pass parameters to animator to switch beetween animations
+        public bool IsTouchingGround { get; private set; }
+        public bool IsGroundNear { get; private set; }
 
         private void Awake()
         {
@@ -27,6 +32,19 @@ namespace Characters
             characterShapeAnimatedBody = GetComponent<CharacterShapeAnimatedBody>();
             
             InteractablesDetecterInitialization();
+
+            playerPhysicsBody.IsGroundNear.OnValueChanged += OnGroundNearChanged;
+            playerPhysicsBody.IsTouchingGround.OnValueChanged += OnTouchingGroundChanged;
+        }
+        
+        private void OnTouchingGroundChanged(bool newValue)
+        {
+            IsTouchingGround = newValue;
+        }
+
+        private void OnGroundNearChanged(bool newValue)
+        {
+            IsGroundNear = newValue;
         }
 
         private void InteractablesDetecterInitialization()

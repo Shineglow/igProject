@@ -11,7 +11,7 @@ public class AccelerationModuleTests
     public void AccelerationTest()
     {
         var accelerationModule = new AccelerationModule();
-        var playerStats = Resources.Load<PlayerStats>("Scriptables/PlayerCharacterStats");
+        var playerStats = Resources.Load<CharacterStats>("Scriptables/PlayerCharacterStats");
         var rightSpeed = 0f;
         var speedFromAccelerationModule = 0f;
 
