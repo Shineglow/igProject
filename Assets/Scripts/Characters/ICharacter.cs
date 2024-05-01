@@ -6,11 +6,11 @@ namespace Characters
     {
         public ICharacterStats CharacterStats { get; }
         
-        public Vector2 Velocity { get; }
+        public Vector2 CurrentVelocity { get; }
         
         public bool IsTouchingGround { get; }
         public bool IsGroundNear { get; }
-        public bool IsFallingDown => !IsTouchingGround && Velocity.y < 0 && Mathf.Abs(Velocity.y) > Mathf.Abs(Velocity.x);
-        public bool IsMoving => IsTouchingGround && Mathf.Abs(Velocity.x) > 0;
+        public bool IsFallingDown => !IsTouchingGround && CurrentVelocity.y < 0 && Mathf.Abs(CurrentVelocity.y) > Mathf.Abs(CurrentVelocity.x);
+        public bool IsMoving => IsTouchingGround && Mathf.Abs(CurrentVelocity.x) > 0;
     }
 }

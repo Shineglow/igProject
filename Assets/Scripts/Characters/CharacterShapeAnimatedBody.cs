@@ -28,5 +28,10 @@ namespace Characters
         {
             animator.SetBool(flagName, value);
         }
+
+        public void SetFloat(string floatName, float value)
+        {
+            animator.SetFloat(floatName, value);
+        }
     }
 }

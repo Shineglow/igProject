@@ -21,17 +21,23 @@ namespace Characters.Player
         private ContactFilter2D _groundFilter;
         
         private Vector2 _normalPerpendicular;
-        public Vector2 CurrentVelocity => _rb.velocity;
+        public Vector2 VelocityVector => _rb.velocity;
 
         #endregion
 
         #region ObservableProperties
 
-        private readonly ObservableProperty<bool> _isTouchingGround = new(false);
+        [SerializeField]
+        private ObservableProperty<bool> _isTouchingGround = new(false);
         public IObservableProperty<bool> IsTouchingGround => _isTouchingGround;
 
-        private readonly ObservableProperty<bool> _isGroundNear = new(false);
+        [SerializeField]
+        private ObservableProperty<bool> _isGroundNear = new(false);
         public IObservableProperty<bool> IsGroundNear => _isGroundNear;
+
+        [SerializeField]
+        private ObservableProperty<Vector2> _currentVelocity = new (Vector2.zero);
+        public IObservableProperty<Vector2> CurrentVelocity => _currentVelocity;
 
         #endregion
 
@@ -71,6 +77,13 @@ namespace Characters.Player
             
             if(_isTouchingGround.Value)
                 MoveUnderGround(deltaTime);
+            
+            UpdateCurrentVelocity();
+        }
+
+        private void UpdateCurrentVelocity()
+        {
+            _currentVelocity.Value = _rb.velocity;
         }
 
         private void UpdateGroundNearValue()

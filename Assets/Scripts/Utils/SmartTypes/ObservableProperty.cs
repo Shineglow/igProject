@@ -1,9 +1,12 @@
 using System;
+using UnityEngine;
 
 namespace Utils.SmartTypes
 {
+    [Serializable]
     public class ObservableProperty<T> : IObservableProperty<T>
     {
+        [SerializeField]
         private T _value;
 
         public T Value
