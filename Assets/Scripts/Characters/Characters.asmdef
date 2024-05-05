@@ -1,10 +1,12 @@
 {
     "name": "Characters",
-    "rootNamespace": "Characters",
+    "rootNamespace": "",
     "references": [
         "GUID:2e0fa2142c9678641951599f62c51d82",
         "GUID:75469ad4d38634e559750d17036d5f7c",
-        "GUID:59fc85d4f65d3534798f235656a7c9d9"
+        "GUID:59fc85d4f65d3534798f235656a7c9d9",
+        "GUID:892e45a8d52c31b4582679430e6b48cd",
+        "GUID:16ff37f7542a4d0ca1443db918db0efe"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

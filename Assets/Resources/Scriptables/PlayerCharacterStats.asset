@@ -14,27 +14,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <MaxSeed>k__BackingField: 5
   <JumpHeight>k__BackingField: 1
-  <AccelerationMax>k__BackingField: 5
+  <AccelerationMax>k__BackingField: 10
   <Acceleration>k__BackingField:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 1
-      inSlope: -0.045453344
-      outSlope: -0.045453344
+      inSlope: -2.5705848
+      outSlope: -2.5705848
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.020499935
+    - serializedVersion: 3
+      time: 1
+      value: 0.1
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.51142794
-    - serializedVersion: 3
-      time: 1
-      value: 0.2
-      inSlope: -2.6645794
-      outSlope: -2.6645794
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.053804517
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2

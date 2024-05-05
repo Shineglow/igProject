@@ -23,5 +23,15 @@ namespace Characters
             // if we need to look at right, we must invert input parameter
             spriteRenderer.flipX = !isLookAtRight;
         }
+
+        public void SetFlag(string flagName, bool value)
+        {
+            animator.SetBool(flagName, value);
+        }
+
+        public void SetFloat(string floatName, float value)
+        {
+            animator.SetFloat(floatName, value);
+        }
     }
 }
