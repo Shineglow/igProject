@@ -42,6 +42,8 @@ namespace Characters
             playerPhysicsBody.CurrentVelocity.OnValueChanged += OnVelocityChanged;
         }
 
+        #region CharacterStateUpdatedMethods
+
         private void UpdateIsFallingDownAndIsMovingValues()
         {
             characterShapeAnimatedBody.SetFlag(nameof(IsFallingDown), IsFallingDown);
@@ -68,6 +70,8 @@ namespace Characters
             characterShapeAnimatedBody.SetFlag(nameof(IsGroundNear), newValue);
         }
 
+        #endregion
+
         private void InteractablesDetecterInitialization()
         {
             if (interactableDetecter == null)
@@ -85,8 +89,6 @@ namespace Characters
 
         public void Move(Vector2 direction)
         {
-            StupidAnimationSwitch(direction);
-
             ChangeLookDirection(direction);
 
             playerPhysicsBody.SetMovementDirection(direction);
@@ -101,15 +103,10 @@ namespace Characters
                 characterShapeAnimatedBody.LookAtRight(newLookDirection);
         }
 
-        private void StupidAnimationSwitch(Vector2 direction)
-        {
-            // var animationName = direction.magnitude > 0 ? "Run" : "Idle";
-            // characterShapeAnimatedBody.PlayAnimation(animationName);
-        }
-
         public void Jump()
         {
-            playerPhysicsBody.Jump(stats.JumpHeight);
+            if(IsTouchingGround)
+                playerPhysicsBody.Jump(stats.JumpHeight);
         }
 
         public void Action()

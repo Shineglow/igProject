@@ -31,27 +31,41 @@ namespace Characters
             _characterStats = characterStats;
             _horizontalDirection = GetDirection(inputDirection.x);
 
-            speed = CalculateActualSpeed(deltaTime);
+            speed = CalculateActualSpeed(inputDirection, deltaTime, characterStats);
             
             speed = Mathf.Clamp(speed, -_characterStats.MaxSeed, _characterStats.MaxSeed);
 
             return speed;
         }
 
-        private float CalculateActualSpeed(float deltaTime)
+        public float GetCurrentAcceleration(Vector2 inputDirection, float deltaTime,
+            [NotNull] ICharacterStats characterStats)
         {
+            _characterStats = characterStats;
+            _horizontalDirection = GetDirection(inputDirection.x);
+            
             var speedDirection = GetDirection(speed);
             var normalizedSpeed = Mathf.Abs(speed) / _characterStats.MaxSeed;
-            var result = speed;
-            var isInputDirectionZero = _horizontalDirection == 0f;
 
             var isSpeedDirectionSameAsInput = Math.Abs(speedDirection - _horizontalDirection) < 0.001f;
             var isAccelerateNow = isSpeedDirectionSameAsInput || speedDirection == 0;
             var actualAcceleration = isAccelerateNow
                 ? GetCurrentAcceleration(normalizedSpeed) * _horizontalDirection
                 : GetCurrentDeceleration(normalizedSpeed) * -speedDirection;
+
+            return actualAcceleration * deltaTime;
+        }
+
+        private float CalculateActualSpeed(Vector2 inputDirection, float deltaTime,
+            [NotNull] ICharacterStats characterStats)
+        {
+            var result = speed;
             
-            result += actualAcceleration * deltaTime;
+            var isInputDirectionZero = _horizontalDirection == 0f;
+            
+            var speedDirection = GetDirection(speed);
+
+            result += GetCurrentAcceleration(inputDirection, deltaTime, characterStats);
 
             if (Math.Abs(speedDirection - GetDirection(result)) > 0.0001f && isInputDirectionZero)
                 result = 0;
