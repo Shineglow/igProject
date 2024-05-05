@@ -1,3 +1,4 @@
+using Game.Configurations;
 using JetBrains.Annotations;
 using UnityEngine;
 using Utils.SmartTypes;
@@ -49,13 +50,13 @@ namespace Characters.Player
         #endregion
 
         private ICharacterStats _stats;
-        
-        private static float GROUND_NEAR_TRESHOLD = 0.3f;
+        private CharactersGeneralConfiguration charactersGeneralConfiguration;
 
         [Inject]
-        public void Construct(AccelerationModule accelerationModule)
+        public void Construct(AccelerationModule accelerationModule, CharactersGeneralConfiguration charactersGeneralConfiguration)
         {
             this.accelerationModule = accelerationModule;
+            this.charactersGeneralConfiguration = charactersGeneralConfiguration;
         }
 
         private void Awake()
@@ -72,12 +73,8 @@ namespace Characters.Player
             _isTouchingGround.Value = _contactPoints != null && _rb.GetContacts(_groundFilter, _contactPoints) > 0;
 
             UpdateGroundNearValue();
-
-            JumpInUpdate(deltaTime);
-            
-            if(_isTouchingGround.Value)
-                MoveUnderGround(deltaTime);
-            
+            JumpAction(deltaTime);
+            MoveUnderGround(deltaTime);
             UpdateCurrentVelocity();
         }
 
@@ -101,7 +98,7 @@ namespace Characters.Player
             }
             
             var hitInfo = hitInfos[0];
-            _isGroundNear.Value = hitInfo.distance < GROUND_NEAR_TRESHOLD;
+            _isGroundNear.Value = hitInfo.distance < charactersGeneralConfiguration.GroundNearTreshold;
         }
 
         private void MoveUnderGround(float deltaTime)
@@ -109,29 +106,40 @@ namespace Characters.Player
             if (!_isTouchingGround.Value) 
                 return;
             
-            var actualSpeed = accelerationModule.GetActualSpeedSigned(_movementVector, deltaTime, _stats);
+            var acceleration = accelerationModule.GetCurrentAcceleration(_movementVector, deltaTime, _stats);
             
             var surfaceNormal = _contactPoints[0].normal;
             var normalOrthogonal = new Vector2(surfaceNormal.y, -surfaceNormal.x);
-            var relativeMovement = normalOrthogonal * actualSpeed;
+            var relativeAcceleration = normalOrthogonal * acceleration;
 
-            _rb.velocity = relativeMovement;
+            var velocity = _rb.velocity;
+            velocity += relativeAcceleration;
+            _rb.velocity = Vector2.ClampMagnitude(velocity, _stats.MaxSeed);
         }
 
-        private void JumpInUpdate(float deltaTime)
+        private void JumpAction(float deltaTime)
         {
-            if (!_isTouchingGround.Value || !(_jumpForce.magnitude > 0)) return;
+            if (!(_jumpForce.magnitude > 0)) return;
             
-            _rb.AddForce(_jumpForce, ForceMode2D.Impulse);
+            _rb.velocity += _jumpForce;
             _jumpForce = Vector3.zero;
             _isTouchingGround.Value = false;
+        }
+        
+        private float CalculateJumpForce(float jumpHeight, float characterMass)
+        {
+            float gravity = Physics2D.gravity.magnitude;
+
+            float initialVerticalVelocity = Mathf.Sqrt(2f * gravity * jumpHeight);
+            float jumpForce = initialVerticalVelocity - _rb.velocity.y;
+
+            return jumpForce;
         }
 
         public void Jump(float height)
         {
-            var forceUp = _rb.mass * Mathf.Sqrt(2f * -Physics.gravity.y * height);
+            var forceUp = CalculateJumpForce(height, _rb.mass);
             _jumpForce = Vector3.up * forceUp;
-            UnityEngine.Debug.Log($"_jumpForce = {_jumpForce}");
         }
 
         public void SetMovementDirection(Vector2 direction)
